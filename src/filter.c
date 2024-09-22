@@ -12,7 +12,7 @@ char read_char(const int file_descriptor, int *err)
     if(bytes_read == -1)
     {
         *err = errno;
-        return -1;
+        return (char)-1;
     }
     buffer[bytes_read] = '\0';
     return buffer[0];
@@ -59,7 +59,7 @@ int filter_file(const int input_fd, const int output_fd, int *err, filter_func f
     while((character != '\0'))
     {
         character = read_char(input_fd, err);
-        if(character == -1)
+        if(character == (char)-1)
         {
             return -1;
         }
