@@ -30,27 +30,20 @@ int main(int argc, char *const *arguments)
     {
         return EXIT_FAILURE;
     }
-    switch(*settings.filter_type)
+
+    if(settings.filter_type != (void *)0 && strcmp(settings.filter_type, "upper") == 0)
     {
-        case('u'):
-        {
-            if(strcmp(settings.filter_type, "upper") == 0)
-            {
-                check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, upper_filter);
-            }
-            break;
-        }
-        case('l'):
-        {
-            if(strcmp(settings.filter_type, "lower") == 0)
-            {
-                check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, lower_filter);
-            }
-            break;
-        }
-        default:
-            check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, null_filter);
+        check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, upper_filter);
     }
+    else if(settings.filter_type != (void *)0 && strcmp(settings.filter_type, "lower") == 0)
+    {
+        check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, lower_filter);
+    }
+    else
+    {
+        check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, null_filter);
+    }
+
     if(check_exit == -1)
     {
         return EXIT_FAILURE;
