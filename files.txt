@@ -1,0 +1,1 @@
+main src/assign1.c src/filter.c src/args.c include/filter.h include/args.h include/settings.h
