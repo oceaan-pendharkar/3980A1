@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 int main(int argc, char *const *arguments)
@@ -29,7 +30,27 @@ int main(int argc, char *const *arguments)
     {
         return EXIT_FAILURE;
     }
-    check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, settings.filter_type);
+    switch(*settings.filter_type)
+    {
+        case('u'):
+        {
+            if(strcmp(settings.filter_type, "upper") == 0)
+            {
+                check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, upper_filter);
+            }
+            break;
+        }
+        case('l'):
+        {
+            if(strcmp(settings.filter_type, "lower") == 0)
+            {
+                check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, lower_filter);
+            }
+            break;
+        }
+        default:
+            check_exit = filter_file(settings.input_file_descriptor, settings.output_file_descriptor, &errno, null_filter);
+    }
     if(check_exit == -1)
     {
         return EXIT_FAILURE;

@@ -34,37 +34,22 @@ int write_char(const int file_descriptor, int *err, char character)
     return 0;
 }
 
-char filter(const char *filter_type, const char character)
+char upper_filter(char character)
 {
-    if(filter_type == NULL)
-    {
-        return character;
-    }
-    switch(*filter_type)
-    {
-        case('u'):
-        {
-            if(strcmp(filter_type, "upper") == 0)
-            {
-                return (char)toupper(character);
-            }
-            break;
-        }
-        case('l'):
-        {
-            if(strcmp(filter_type, "lower") == 0)
-            {
-                return (char)tolower(character);
-            }
-            break;
-        }
-        default:
-            return character;
-    }
+    return (char)toupper(character);
+}
+
+char lower_filter(char character)
+{
+    return (char)tolower(character);
+}
+
+char null_filter(char character)
+{
     return character;
 }
 
-int filter_file(const int input_fd, const int output_fd, int *err, const char *filter_type)
+int filter_file(const int input_fd, const int output_fd, int *err, filter_func filter)
 {
     char character = 1;
     // cppcheck-suppress variableScope
@@ -78,7 +63,7 @@ int filter_file(const int input_fd, const int output_fd, int *err, const char *f
         {
             return -1;
         }
-        filteredCharacter = filter(filter_type, character);
+        filteredCharacter = filter(character);
         write             = write_char(output_fd, err, filteredCharacter);
         if(write == -1)
         {
